@@ -1,9 +1,9 @@
-# from selenium import webdriver
-# from selenium.webdriver.common.by import By
-# import pandas as pd
-# import time
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import pandas as pd
+import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 #
 # # Configurar el web driver
 # driver = webdriver.Chrome()
@@ -90,7 +90,7 @@ driver = webdriver.Chrome()
 #             "https://www.alisedainmobiliaria.com/comprar-vivienda/barcelona/barcelona/37910931"]
 
 # Lee el archivo Excel y obtiene los URLs de la columna "Referencia"
-df = pd.read_excel('properties_data_245.xlsx', sheet_name='Sheet1', usecols=['link'])
+df = pd.read_excel('properties_data_195.xlsx', sheet_name='Sheet1', usecols=['link'])
 
 # Convierte los URLs en una lista
 url_list = df['link'].tolist()
@@ -259,26 +259,26 @@ for url in url_list:
 
         df.to_excel(f"properties_data_{file_counter}.xlsx", index=False, engine="openpyxl")
 
-# Crear el elemento raíz del archivo XML
-root = ET.Element("Data")
-
-# Recorrer los datos y crear un elemento para cada uno
-for d in data:
-    item = create_element_with_format(root, "Item", level=1)
-    for key, value in d.items():
-        if key == "MainPhoto":
-            # Crear un subelemento para la imagen principal
-            image_element = create_element_with_format(item, "MainPhoto", value, level=2)
-        elif key == "ImageSources":
-            # Crear un subelemento para cada imagen adicional
-            for index, image_source in enumerate(value):
-                image_element = create_element_with_format(item, f"Picture{index+1}", image_source, level=2)
-        else:
-            create_element_with_format(item, key, value, level=2)
-
-# Crear el árbol XML y guardar el archivo
-tree = ET.ElementTree(root)
-tree.write("data.xml", encoding="utf-8", xml_declaration=True)
+# # Crear el elemento raíz del archivo XML
+# root = ET.Element("Data")
+#
+# # Recorrer los datos y crear un elemento para cada uno
+# for d in data:
+#     item = create_element_with_format(root, "Item", level=1)
+#     for key, value in d.items():
+#         if key == "MainPhoto":
+#             # Crear un subelemento para la imagen principal
+#             image_element = create_element_with_format(item, "MainPhoto", value, level=2)
+#         elif key == "ImageSources":
+#             # Crear un subelemento para cada imagen adicional
+#             for index, image_source in enumerate(value):
+#                 image_element = create_element_with_format(item, f"Picture{index+1}", image_source, level=2)
+#         else:
+#             create_element_with_format(item, key, value, level=2)
+#
+# # Crear el árbol XML y guardar el archivo
+# tree = ET.ElementTree(root)
+# tree.write("data.xml", encoding="utf-8", xml_declaration=True)
 
 # Cerrar el navegador
 driver.close()
