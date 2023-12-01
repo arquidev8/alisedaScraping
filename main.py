@@ -90,7 +90,7 @@ href_set = set()
 all_properties_data = pd.DataFrame(columns=["link"])
 
 # Itera a través de todas las páginas
-for page in range(430):
+for page in range(500):
     driver.get("https://www.alisedainmobiliaria.com/compra-con-un-clic?page=" + str(page))
 
     # ... (Aceptar las cookies y esperar a que la página cargue)
