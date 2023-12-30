@@ -112,7 +112,17 @@ data_frames = []
 for url in url_list:
     # Navegar a la URL
     driver.get(url)
-    time.sleep(15)
+    time.sleep(40)
+
+    # Aceptar la política de cookies si existe el botón
+    try:
+        cookie_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//*[@id='Home']/div[1]/ng-component/div/div/div[2]/button[1]"))
+        )
+        cookie_button.click()
+    except TimeoutException:
+        print("No se encontró el botón de cookies o ya ha sido aceptado.")
+
 
     # Obtener los datos de la página
     referencia = element = driver.find_elements(By.XPATH, "//div[@class='description']//div//div//span")
@@ -152,7 +162,7 @@ for url in url_list:
     except TimeoutException:
         desired_word_3 = 'N/A'
 
-    provincia = driver.find_elements(By.XPATH, "//a[@class='province']")
+    provincia = driver.find_elements(By.XPATH, "//*[@id='Home']/div[1]/app-root/app-main/div/app-detail/main/div/section[3]/div[1]/app-real-state-title/span")
 
     try:
         provincia_text = provincia[0].text
@@ -219,7 +229,7 @@ for url in url_list:
     image_sources_dict = {'image_sources': image_sources}
     image_sources_json = json.dumps(image_sources_dict)
 
-    elements = referencia + descripcion + direccion + provincia + title + construccion + price + [image_source] + image_sources
+    # elements = referencia + descripcion + direccion + provincia + title + construccion + price + [image_source] + image_sources
 
     # Convierte la lista de datos en un DataFrame
     df = pd.DataFrame(
@@ -252,6 +262,11 @@ for url in url_list:
             'Ciudad'
         ]
     )
+
+
+    # Imprimir información de la iteración actual
+    print("\nDatos de la propiedad actual:")
+    print(f"Referencia: {referencia_text}, Titulo: {title_text}, Descripcion: {descripcion_text}, Direccion: {direccion_text}, Provincia: {provincia_text}, Ciudad: {desired_word_3}, MetrosCuadrados: {metros_cuadrados}, Habitaciones: {habitaciones}, Baños: {banos}, Price: {price_int}, MainPhoto: {image_source}, ImageSources: {image_sources}")
 
     # Añade el DataFrame actual a la lista
     data_frames.append(df)
