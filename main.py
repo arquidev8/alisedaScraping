@@ -210,10 +210,15 @@ for url in url_list:
         price_text = price[0].text
         # Eliminar el símbolo de euro y los puntos
         price_text = price_text.replace('€', '').replace('.', '')
-        # Convertir a float
+        # Convertir a entero
         price_int = int(price_text)
     except IndexError:
         print(f"No se encontró el elemento 'price' en la URL: {url}")
+        price_int = None  # Otra acción según tus necesidades, por ejemplo, asignar None o un valor predeterminado
+        continue
+    except (ValueError, AttributeError):
+        print(f"No se pudo convertir a entero o hubo un problema con el elemento 'price' en la URL: {url}")
+        price_int = price_text  # Mantener el valor original como string
         continue
 
     main_photo = driver.find_element(By.XPATH, "//div[@class='ng-star-inserted']//img")
