@@ -65,6 +65,7 @@ all_properties_data.to_excel("links_aliseda_final.xlsx", index=False, engine="op
 driver.quit()
 
 
+time.sleep(20)
 
 
 import json
@@ -231,42 +232,88 @@ for url in url_list:
         image_sources.append(element.get_attribute("src"))
 
     # Convierte la lista de URL en un diccionario y luego en una cadena JSON
-    image_sources_dict = {'image_sources': image_sources}
+    # image_sources_dict = {"image_sources": image_sources}
+    # image_sources_json = json.dumps(image_sources_dict)
+
+    # Verificar si la lista image_sources está vacía
+    if not image_sources:
+        image_sources_dict = {'image_sources': []}
+    else:
+        # Convierte la lista de URL en un diccionario y luego en una cadena JSON
+        image_sources_dict = {'image_sources': image_sources}
     image_sources_json = json.dumps(image_sources_dict)
 
-    # elements = referencia + descripcion + direccion + provincia + title + construccion + price + [image_source] + image_sources
-
     # Convierte la lista de datos en un DataFrame
-    df = pd.DataFrame(
-        data=[{
-            "Referencia": referencia_text,
-            "Title": title_text,
-            "Descripcion": descripcion_text,
-            "Direccion": direccion_text,
-            "Provincia": provincia_text,
-            "Ciudad": desired_word_3,
-            "MetrosCuadrados": metros_cuadrados,
-            "Habitaciones": habitaciones,
-            "Banos": banos,
-            "Price": price_int,
-            "MainPhoto": image_source,
-            "ImageSources": image_sources
-        }],
-        columns=[
-            'Referencia',
-            'Title',
-            'Descripcion',
-            'Provincia',
-            'Direccion',
-            'MetrosCuadrados',
-            'Habitaciones',
-            'Banos',
-            'Price',
-            'MainPhoto',
-            'ImageSources',
-            'Ciudad'
-        ]
-    )
+    # df = pd.DataFrame(
+    #     data=[{
+    #         "Referencia": referencia_text,
+    #         "Title": title_text,
+    #         "Descripcion": descripcion_text,
+    #         "Direccion": direccion_text,
+    #         "Provincia": provincia_text,
+    #         "Ciudad": desired_word_3,
+    #         "MetrosCuadrados": metros_cuadrados,
+    #         "Habitaciones": habitaciones,
+    #         "Banos": banos,
+    #         "Price": price_int,
+    #         "MainPhoto": image_source,
+    #         "ImageSources": image_sources
+    #     }],
+    #     columns=[
+    #         'Referencia',
+    #         'Title',
+    #         'Descripcion',
+    #         'Provincia',
+    #         'Direccion',
+    #         'MetrosCuadrados',
+    #         'Habitaciones',
+    #         'Banos',
+    #         'Price',
+    #         'MainPhoto',
+    #         'ImageSources',
+    #         'Ciudad'
+    #     ]
+    # )
+
+    # Verificar si la referencia está vacía o es "N/A"
+    if referencia_text and referencia_text != "N/A":
+        # Convierte la lista de datos en un DataFrame
+        df = pd.DataFrame(
+            data=[{
+                "Referencia": referencia_text,
+                "Title": title_text,
+                "Descripcion": descripcion_text,
+                "Direccion": direccion_text,
+                "Provincia": provincia_text,
+                "Ciudad": desired_word_3,
+                "MetrosCuadrados": metros_cuadrados,
+                "Habitaciones": habitaciones,
+                "Banos": banos,
+                "Price": price_int,
+                "MainPhoto": image_source,
+                "ImageSources": image_sources
+            }],
+            columns=[
+                'Referencia',
+                'Title',
+                'Descripcion',
+                'Provincia',
+                'Direccion',
+                'MetrosCuadrados',
+                'Habitaciones',
+                'Banos',
+                'Price',
+                'MainPhoto',
+                'ImageSources',
+                'Ciudad'
+            ]
+        )
+    else:
+        print(f"Referencia vacía o 'N/A' en la URL: {url}. Omitiendo esta propiedad.")
+        continue  # Salta a la próxima iteración del bucle
+
+
+
 
 
     # Imprimir información de la iteración actual
@@ -293,6 +340,8 @@ all_data_frames.to_excel("aliseda_data_final.xlsx", index=False, engine="openpyx
 # Cerrar el navegador
 driver.close()
 
+
+time.sleep(20)
 
 
 #INSERTAR DATOS EN BD
